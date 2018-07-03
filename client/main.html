@@ -1,0 +1,94 @@
+<head>
+  <title>Prise de Notes</title>
+</head>
+
+<body>
+  {{#if currentUser}}
+    {{> accueil}}
+  {{else}}
+    {{#if loggingIn}}
+      loading...
+    {{else}}
+      {{> homepage}}
+    {{/if}}
+  {{/if}}
+</body>
+
+<template name="accueil">
+  {{> navbar}}
+  <div class="container">
+    {{> form_create_note}}
+    {{> list_note}}
+  </div>
+</template>
+
+<template name="homepage">
+  <h1 class="text-center">Application Notes</h1>
+	{{> atForm}}
+</template>
+
+<template name="form_create_note">
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <!-- Panel -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <!-- Formulaire -->
+          <form class="js-new-note">
+            <input type="text" class="form-control" name="title" placeholder="Titre de la note" value="{{note.title}}">
+            <textarea type="text" name="description" class="form-control" rows="3"
+            style="resize: vertical;" placeholder="Saisir une note">{{note.description}}</textarea>
+            <button type="submit" class="btn btn-primary">Saisir la note</button>
+          </form>
+          <!-- Formulaire -->
+        </div>
+      </div>
+      <!-- Panel -->
+    </div>
+  </div>
+</template>
+
+<template name="list_note">
+  <h2 class="text-center">Liste des notes</h2>
+  {{#if notes}}
+    {{#each note in notes}}
+    {{> single_note note=note}}
+    {{/each}}
+  {{else}}
+    <h3 class="text-center" style="color: #aaa">Aucune note à afficher</h3>
+  {{/if}}
+</template>
+
+<template name="single_note">
+  <div class="panel panel-default js-note" style="cursor:pointer">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{note.title}}</h3>
+    </div>
+    <div class="panel-body">
+      <p style="white-space:pre">{{note.description}}</p>
+    </div>
+  </div>
+</template>
+
+<template name="modal_edit_note">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form class="js-edit-note form-horizontal">
+            <input type="text" class="form-control" name="title"
+            placeholder="Titre de la note" value="{{note.title}}">
+            <textarea type="text" name="description" class="form-control"
+            rows="8" style="resize: vertical;"
+            placeholder="Saisir une note">{{note.description}}</textarea>
+            <div class="text-right">
+              <button type="button" class="btn btn-danger pull-left js-delete-note">Supprimer</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+              <button type="input" class="btn btn-primary">Sauvegarder</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
