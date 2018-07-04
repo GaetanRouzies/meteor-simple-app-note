@@ -19,6 +19,13 @@ Meteor.methods({
         description: description
       }
     });
+
+    if(Meteor.isServer){
+      console.log('Ceci est spécial server');
+    }
+    if (Meteor.isClient) {
+      console.log('Ceci est spécial client');
+    }
   },
   removeNote(noteId){
     Notes.remove({_id: noteId});
