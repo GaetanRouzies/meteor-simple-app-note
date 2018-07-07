@@ -1,33 +1,33 @@
-import { Notes } from './collections.js';
+import { Notes, NoteUpsertSchema } from './collections.js';
+import { check } from 'meteor/check';
 
 Meteor.methods({
-  insertNote(title, description){
+  insertNote(note){
+    NoteUpsertSchema.validate(note);
+
     Notes.insert({
       ownerId: this.userId,
-      title: title,
-      description: description,
+      title: note.title,
+      description: note.description,
       createdAt: new Date(),
     });
 
   },
-  updateNote(noteId, title, description){
-    Notes.update({_id: noteId},
+  updateNote(note){
+    NoteUpsertSchema.validate(note);
+
+    Notes.update({_id: note.id},
     {
       $set:
       {
-        title: title,
-        description: description
+        title: note.title,
+        description: note.description
       }
     });
-
-    if(Meteor.isServer){
-      console.log('Ceci est spécial server');
-    }
-    if (Meteor.isClient) {
-      console.log('Ceci est spécial client');
-    }
   },
   removeNote(noteId){
+    check(noteId, String);
+
     Notes.remove({_id: noteId});
   }
 });
