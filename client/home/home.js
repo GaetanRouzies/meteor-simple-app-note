@@ -15,6 +15,10 @@ Template.form_create_note.events({
   },
 });
 
+Template.list_note.onCreated(function(){
+  this.subscribe('notes.own');
+});
+
 Template.list_note.helpers({
   notes(){
     return Notes.find({ownerId: Meteor.userId()}).fetch();
